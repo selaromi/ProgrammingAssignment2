@@ -1,8 +1,12 @@
 ## Put comments here that give an overall description of what your
 ## functions do
 
-## Write a short comment describing this function
 
+## function makeCacheMatrix
+## creates a matrix with a cachable inverted value (when computed using 'cachesolve')
+## params:
+##      x - matrix 
+##
 makeCacheMatrix <- function(x = matrix()) {
         ## the inverse of the matrix is initialized to NULL
         inversematrix <- NULL
@@ -29,8 +33,17 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
-
+## function cacheSolve
+## returns inverted value of CacheMatrix, from cache when it exists, if not it 
+## computes it and stores it in CacheMatrix invert value cache.
+## params:
+##      x - matrix to be inverted
+##      ... - further arguments passed to or from other methods
+## output:
+##      inverted Matrix if x can is invertible
+## error:
+##      "Matrix can't be inverted" if x cannot be inverted.
+##
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
         inversematrix <- x$getinverse()
@@ -46,10 +59,14 @@ cacheSolve <- function(x, ...) {
         ## Try to invert matrix, fail silently and inform the user if is it not possible
         inversematrix <- try(solve(data, ...), silent = TRUE)
         
+        ## try returns class "try-error" when it fails, and solve returns "matrix", 
+        ## if the class of inversematrix is "matrix", the Matrix is invertible and thus
+        ## the inverse of the new matrix is stored in cached via setinverse
         if(class(inversematrix) == "matrix") {
                 x$setinverse(inversematrix)
                 inversematrix
         } else {
-                message("Matrix can't be inversed")
+                ## message to the user when the matrix is not invertible
+                message("Matrix can't be inverted")
         }
 }
